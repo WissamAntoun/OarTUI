@@ -185,15 +185,15 @@ class ConfirmScreen(ModalScreen[bool]):
             self.dismiss(False)
 
 
-class OarUIReturn:
-    """Return value for OarUI."""
+class OarTUIReturn:
+    """Return value for OarTUI."""
 
     def __init__(self, action: str, extra: Dict[str, Any]) -> None:
         self.action = action
         self.extra = extra
 
 
-class OarUI(App[OarUIReturn]):
+class OarTUI(App[OarTUIReturn]):
     """A Textual UI for OAR jobs."""
 
     CSS_PATH = "css/oartui.css"
@@ -349,7 +349,7 @@ class OarUI(App[OarUIReturn]):
             selected_job["launchingDirectory"],
             selected_job["stdout_file" if is_std_out else "stderr_file"],
         )
-        self.exit(OarUIReturn("logs", {"log_path": log_path}))
+        self.exit(OarTUIReturn("logs", {"log_path": log_path}))
 
     def action_logs_out(self) -> None:
         """Show the logs (STDOUT)."""
@@ -382,7 +382,7 @@ class OarUI(App[OarUIReturn]):
             )
             return
 
-        self.exit(OarUIReturn("connect", extra={"job_id": selected_job["Job_Id"]}))
+        self.exit(OarTUIReturn("connect", extra={"job_id": selected_job["Job_Id"]}))
 
     def _delete_job(self, selected_job: Dict[str, Any], delete_array=False) -> None:
         if delete_array:
@@ -472,16 +472,16 @@ class OarUI(App[OarUIReturn]):
 
         def print_cli(string_to_print: str) -> None:
             """Print the string to the CLI."""
-            self.exit(OarUIReturn("print", {"string_to_print": string_to_print}))
+            self.exit(OarTUIReturn("print", {"string_to_print": string_to_print}))
 
         self.push_screen(InfoScreen(selected_job), print_cli)
 
     def action_quit(self) -> None:
         """Quit the application."""
-        self.exit(OarUIReturn("quit", {}))
+        self.exit(OarTUIReturn("quit", {}))
 
 
-def oarcommand_executor(oar_return: OarUIReturn, mock=MOCK) -> None:
+def oarcommand_executor(oar_return: OarTUIReturn, mock=MOCK) -> None:
     if oar_return.action == "connect":
         if mock:
             print(f"oarsub -C {oar_return.extra['job_id']}")
@@ -502,7 +502,7 @@ def oarcommand_executor(oar_return: OarUIReturn, mock=MOCK) -> None:
 
 def main():
     while True:
-        app = OarUI()
+        app = OarTUI()
         reply = app.run()
         if reply:
             oarcommand_executor(reply)

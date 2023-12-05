@@ -4,7 +4,6 @@ TUI for browsing, canceling, and inspecting OAR jobs on a cluster using only the
 # Available utils
 - `oartui` : Shows the list of jobs running on the cluster and allows to select one to view it's logs (stderr or stdout), it's full information, delete it or connect to it's node. Other aliases: `oarui`, `oui`
 
-# Job UI (jobui)
  <!-- show image -->
 ![jobui](./img/Screenshot%202023-08-11%20144426.png)
 
